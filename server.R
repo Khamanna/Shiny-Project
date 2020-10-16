@@ -1,0 +1,31 @@
+function(input, output) { 
+  
+
+  output$top_ten_games = renderPlot({
+    categories %>% 
+      filter(boardgamecategory == input$top_ten) %>% 
+      select(average, name) %>%
+      slice_max(order_by = average, n=10) %>%
+      arrange(desc(average)) %>% 
+      ggplot(aes(x=average, y=reorder(name, average))) + geom_bar(stat='identity') +
+      ylab('Game Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Games in', input$top_ten))
+  })
+  
+  
+  output$summary = renderPlot({
+    categories %>%
+    filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
+    group_by(boardgamecategory) %>%
+    summarise(count=n(), avg_rating = mean(average)) %>%
+    mutate(score = log(count)*avg_rating) %>%
+    arrange(desc(score)) %>%
+    slice_max(order_by = score, n=10)%>%
+    ggplot(aes(x=avg_rating, y=reorder(boardgamecategory, avg_rating))) + geom_bar(stat='identity') +
+    ylab('Category Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Categories in', input$top_ten))
+  })
+  
+  output$Glossary = renderTable(
+  Glossary
+  )
+  
+}

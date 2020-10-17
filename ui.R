@@ -12,7 +12,7 @@ fluidPage(
   #         color: white;
   #         font-size: 20px;
   #       }
-  #       body, label, input, checkboxGroupInput, button, select { 
+  #       body, label, input, button, select { 
   #         font: "Cambria";
   #         font-weight: bold;
   #       }
@@ -34,7 +34,9 @@ fluidPage(
                          plotOutput("top_ten_games")),
                 tabPanel("How Categories Fair Against Each Other", 
                          plotOutput("summary")),
-                tabPanel("glossary", h5("Glossary"),br(),
+                tabPanel("Number of Players", br(),
+                         plotOutput("num_of_players")),
+                tabPanel("Glossary", h5("Glossary"),br(),
                                       ('minplayer - minumum number of players per the publishers'),br(),
                                       ("maxplayers - maximum number of players per the publishers"),br(),
                                       ("minplaytime - minimum playtime required per the publishers"),br(),

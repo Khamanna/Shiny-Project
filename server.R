@@ -24,6 +24,17 @@ function(input, output) {
     ylab('Category Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Categories in', input$top_ten))
   })
   
+  output$num_of_players = renderPlot({
+    categories %>%
+      filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
+      group_by(boardgamecategory) %>%
+      summarise(avg_ppl_num = mean(maxplayers)) %>%
+      arrange(desc(avg_ppl_num)) %>%
+      slice_max(order_by = avg_ppl_num, n=10)%>%
+      ggplot(aes(x=avg_ppl_num, y=reorder(boardgamecategory, avg_ppl_num), fill=boardgamecategory)) + geom_bar(stat='identity') +
+      ylab('Category Title') + xlab('Average Number of People') + ggtitle(paste('Number of Players vs BoarGame Categories', input$top_ten))
+  })
+  
   output$Glossary = renderTable(
   Glossary
   )

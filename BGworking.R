@@ -95,4 +95,18 @@ categories %>%
   arrange(desc(top_ave)) %>% 
   slice_max(order_by = top_ave, n=10)
 
+top_ten = categories %>% 
+  group_by(boardgamecategory) %>% 
+  summarise(count=n(), avg_rating = mean(average)) %>% 
+  mutate(score = log(count)*avg_rating) %>% 
+  arrange(desc(score)) %>% 
+  slice_max(order_by = score, n=10)
+
+categories %>% 
+  filter(boardgamecategory == input$top_ten) %>% 
+  select(average, name) %>%
+  slice_max(order_by = average, n=10) %>%
+  arrange(desc(average)) %>% 
+  ggplot(aes(x=average, y=reorder(name, average))) + geom_bar(stat='identity') +
+  ylab('Game Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Games in', input$top_ten))
 

@@ -8,7 +8,7 @@ function(input, output) {
       slice_max(order_by = average, n=10) %>%
       arrange(desc(average)) %>% 
       ggplot(aes(x=average, y=reorder(name, average), fill=name)) + geom_bar(stat='identity') +
-      ylab('Game Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Games in', input$top_ten))
+      ylab('Title of BoardGame') + xlab('Average Rating') + ggtitle(paste('Top 10 Games in', input$top_ten))
   })
   
   
@@ -21,18 +21,15 @@ function(input, output) {
     arrange(desc(score)) %>%
     slice_max(order_by = score, n=10)%>%
     ggplot(aes(x=avg_rating, y=reorder(boardgamecategory, avg_rating), fill=boardgamecategory)) + geom_bar(stat='identity') +
-    ylab('Category Title') + xlab('Average Rating') + ggtitle(paste('Top 10 Categories in', input$top_ten))
+    ylab('BoardGame Category') + xlab('Average Rating') + ggtitle(paste('Top 10 Categories Ranked'))
   })
   
   output$num_of_players = renderPlot({
     categories %>%
       filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
-      group_by(boardgamecategory) %>%
-      summarise(avg_ppl_num = mean(maxplayers)) %>%
-      arrange(desc(avg_ppl_num)) %>%
-      slice_max(order_by = avg_ppl_num, n=10)%>%
-      ggplot(aes(x=avg_ppl_num, y=reorder(boardgamecategory, avg_ppl_num), fill=boardgamecategory)) + geom_bar(stat='identity') +
-      ylab('Category Title') + xlab('Average Number of People') + ggtitle(paste('Number of Players vs BoarGame Categories', input$top_ten))
+      select(boardgamecategory, maxplaytime) %>%
+      ggplot(aes(x=maxplaytime,y=boardgamecategory)) + geom_boxplot() +
+      ylab('BoardGame Category') + xlab('Maximum Play Time') + ggtitle(paste('Maximum Play Time per Category'))
   })
   
   output$Glossary = renderTable(

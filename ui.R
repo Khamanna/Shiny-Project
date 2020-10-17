@@ -19,24 +19,26 @@ fluidPage(
   #        ')
   # )),
   
+  br(),
   id="sidebar",
-  width=3,
+  br(),
+  width=6,
   selectizeInput(inputId = "top_ten",
                  label = "BoardGame Category",
                  choices = top_ten$boardgamecategory,
-                 selected = top_ten$boardgamecategory[8]
+                 selected = top_ten$boardgamecategory[6]
   ),
   
   mainPanel(
-    width=9,
+    width=13,
     tabsetPanel(type = "tabs",
-                tabPanel("Explore", 
+                tabPanel("Top Ten Games per Top Ten Category",br(),br(),
                          plotOutput("top_ten_games")),
-                tabPanel("How Categories Fair Against Each Other", 
+                tabPanel("Top Ten Categories Ranked", br(),br(),
                          plotOutput("summary")),
-                tabPanel("Number of Players", br(),
+                tabPanel("Play Hours", br(),br(),
                          plotOutput("num_of_players")),
-                tabPanel("Glossary", h5("Glossary"),br(),
+                tabPanel("Glossary",br(), h5("Glossary"),br(),
                                       ('minplayer - minumum number of players per the publishers'),br(),
                                       ("maxplayers - maximum number of players per the publishers"),br(),
                                       ("minplaytime - minimum playtime required per the publishers"),br(),

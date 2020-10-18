@@ -30,7 +30,7 @@ function(input, output) {
       select(boardgamecategory, maxplaytime) %>%
       ggplot(aes(x=maxplaytime,y=boardgamecategory)) +
       geom_boxplot(outlier.shape = NA, fill="red", alpha=0.1) +
-      ylab('BoardGame Category') + xlab('Play Time') +
+      ylab('BoardGame Category') + xlab('Play Time in minutes') +
       ggtitle(paste('Maximum Play Time per Category'))+
       scale_x_log10() 
     
@@ -42,11 +42,22 @@ function(input, output) {
       select(boardgamecategory, minplaytime) %>%
       ggplot(aes(x=(minplaytime), y=boardgamecategory)) +
       geom_boxplot(outlier.shape=NA, fill="red", alpha=0.1) +
-      ylab('BoardGame Category') + xlab('Play Time') +
+      ylab('BoardGame Category') + xlab('Play Time in minutes') +
       ggtitle(paste('Minimum Play Time per Category'))+
       scale_x_log10()
     
   })
+  # working on a description column
+  # output$description = renderTable({
+  #  
+  #   a=categories %>% 
+  #     filter(boardgamecategory == input$top_ten) %>% 
+  #     select(average, name) %>%
+  #     slice_max(order_by = average, n=10) %>%
+  #     arrange(desc(average))
+  #   paste0(a,description$description)
+  # 
+  # })
   
   output$Glossary = renderTable(
   Glossary

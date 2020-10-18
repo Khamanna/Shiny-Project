@@ -1,7 +1,7 @@
 function(input, output) { 
   
 
-  output$top_ten_games = renderPlot({
+  output$top_ten_games = renderPlotly({
     categories %>% 
       filter(boardgamecategory == input$top_ten) %>% 
       select(average, name) %>%
@@ -11,8 +11,7 @@ function(input, output) {
       ylab('Title of BoardGame') + xlab('Average Rating') + ggtitle(paste('Top 10 Games in', input$top_ten))
   })
   
-  
-  output$summary = renderPlot({
+  output$summary = renderPlotly({
     categories %>%
     filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
     group_by(boardgamecategory) %>%
@@ -22,14 +21,31 @@ function(input, output) {
     slice_max(order_by = score, n=10)%>%
     ggplot(aes(x=avg_rating, y=reorder(boardgamecategory, avg_rating), fill=boardgamecategory)) + geom_bar(stat='identity') +
     ylab('BoardGame Category') + xlab('Average Rating') + ggtitle(paste('Top 10 Categories Ranked'))
+    
   })
   
-  output$num_of_players = renderPlot({
+  output$maxnum_of_playtime = renderPlot({
     categories %>%
       filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
       select(boardgamecategory, maxplaytime) %>%
-      ggplot(aes(x=maxplaytime,y=boardgamecategory)) + geom_boxplot() +
-      ylab('BoardGame Category') + xlab('Maximum Play Time') + ggtitle(paste('Maximum Play Time per Category'))
+      ggplot(aes(x=maxplaytime,y=boardgamecategory)) +
+      geom_boxplot(outlier.shape = NA, fill="red", alpha=0.1) +
+      ylab('BoardGame Category') + xlab('Play Time') +
+      ggtitle(paste('Maximum Play Time per Category'))+
+      scale_x_log10() 
+    
+  })
+  
+  output$minnum_of_playtime = renderPlot({
+    categories %>%
+      filter(boardgamecategory %in% top_ten$boardgamecategory) %>% 
+      select(boardgamecategory, minplaytime) %>%
+      ggplot(aes(x=(minplaytime), y=boardgamecategory)) +
+      geom_boxplot(outlier.shape=NA, fill="red", alpha=0.1) +
+      ylab('BoardGame Category') + xlab('Play Time') +
+      ggtitle(paste('Minimum Play Time per Category'))+
+      scale_x_log10()
+    
   })
   
   output$Glossary = renderTable(

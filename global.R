@@ -3,6 +3,7 @@ library(dplyr)
 library(ggplot2)
 library(extrafont)
 library(plotly)
+library(cowplot)
 #library(gapminder)
 
 
